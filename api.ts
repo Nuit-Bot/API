@@ -6,7 +6,7 @@ export interface NuitCommandInput {
 export interface NuitCommand {
     module: string;
     data: any;
-    execute: (interaction: any, ctx: ModuleContext) => Promise<void>;
+    execute: (interaction: any, ctx: BaseCtx) => Promise<void>;
 }
 
 export interface NuitEvent {
@@ -32,4 +32,10 @@ export interface NuitAPI {
     registerCommand(cmd: NuitCommandInput): void;
     onEvent(name: string, handler: NuitEvent["handler"]): void;
     onceEvent(name: string, handler: NuitEvent["handler"]): void;
+}
+
+export interface BaseCtx {
+    supabase: any,
+    client: any,
+    config: any
 }
