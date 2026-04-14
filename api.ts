@@ -18,7 +18,7 @@ export interface ModuleRegistry {
 export interface ModuleContext {
     client: any;      // Discord Client
     supabase: any;    // Supabase DB
-    config: any;
+    config: Readonly<any>; // Config
     api: NuitAPI;
 }
 
