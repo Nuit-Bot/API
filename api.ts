@@ -8,6 +8,7 @@ export interface NuitEvent {
     name: string;
     once: boolean;
     handler: (...args: any[]) => Promise<void> | void;
+    module: string;
 }
 
 export interface ModuleRegistry {
