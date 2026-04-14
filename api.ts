@@ -1,6 +1,11 @@
+export interface NuitCommandInput {
+    data: any;
+    execute: (interaction: any, ctx: ModuleContext) => Promise<void>;
+}
+
 export interface NuitCommand {
     module: string;
-    data: any; // SlashCommandBuilder
+    data: any;
     execute: (interaction: any, ctx: ModuleContext) => Promise<void>;
 }
 
@@ -17,14 +22,14 @@ export interface ModuleRegistry {
 }
 
 export interface ModuleContext {
-    client: any;      // Discord Client
-    supabase: any;    // Supabase DB
-    config: Readonly<any>; // Config
+    client: any;
+    supabase: any;
+    config: Readonly<any>;
     api: NuitAPI;
 }
 
 export interface NuitAPI {
-    registerCommand(cmd: NuitCommand): void;
+    registerCommand(cmd: NuitCommandInput): void;
     onEvent(name: string, handler: NuitEvent["handler"]): void;
     onceEvent(name: string, handler: NuitEvent["handler"]): void;
 }

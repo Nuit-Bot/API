@@ -1,20 +1,27 @@
-import { type ModuleRegistry, type NuitAPI, type NuitCommand } from "./api";
+import {
+    type ModuleRegistry,
+    type NuitAPI,
+    type NuitCommandInput,
+    type NuitCommand
+} from "./api";
 
 export function createAPI(
     registry: ModuleRegistry,
     moduleName: string
 ): NuitAPI {
     return {
-        registerCommand(cmd: NuitCommand) {
-            registry.commands.push({
+        registerCommand(cmd: NuitCommandInput) {
+            const internal: NuitCommand = {
                 ...cmd,
-                module: moduleName // ✅ enforce module ownership
-            });
+                module: moduleName
+            };
+
+            registry.commands.push(internal);
         },
 
         onEvent(name, handler) {
             registry.events.push({
-                module: moduleName, // ✅ ADD THIS
+                module: moduleName,
                 name,
                 once: false,
                 handler
@@ -23,7 +30,7 @@ export function createAPI(
 
         onceEvent(name, handler) {
             registry.events.push({
-                module: moduleName, // ✅ ADD THIS
+                module: moduleName,
                 name,
                 once: true,
                 handler
