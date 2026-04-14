@@ -16,6 +16,7 @@
 
         // Enable emitting
         "noEmit": false,
+        "rootDir": ".",
         "outDir": "dist",
         "declaration": true,
         "emitDeclarationOnly": false,
@@ -33,5 +34,9 @@
         "noPropertyAccessFromIndexSignature": false
     },
 
-    "include": ["*.ts"]
+    "include": [
+        "api.ts",
+        "createAPI.ts",
+        "index.ts"
+    ]
 }
