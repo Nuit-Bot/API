@@ -16,26 +16,23 @@ export interface NuitEvent {
     module: string;
 }
 
-export interface ModuleRegistry {
-    commands: NuitCommand[];
-    events: NuitEvent[];
-}
-
-export interface ModuleContext {
+export interface BaseCtx {
     client: any;
     supabase: any;
     config: Readonly<any>;
+}
+
+export interface ModuleContext extends BaseCtx {
     api: NuitAPI;
+}
+
+export interface ModuleRegistry {
+    commands: NuitCommand[];
+    events: NuitEvent[];
 }
 
 export interface NuitAPI {
     registerCommand(cmd: NuitCommandInput): void;
     onEvent(name: string, handler: NuitEvent["handler"]): void;
     onceEvent(name: string, handler: NuitEvent["handler"]): void;
-}
-
-export interface BaseCtx {
-    supabase: any,
-    client: any,
-    config: any
 }
