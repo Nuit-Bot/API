@@ -6,7 +6,7 @@ export interface NuitCommandInput {
 export interface NuitCommand {
     module: string;
     data: any;
-    execute: (interaction: any, ctx: ModuleContext) => Promise<void>;
+    execute: (interaction: any, ctx: BaseCtx) => Promise<void>;
 }
 
 export interface NuitEvent {

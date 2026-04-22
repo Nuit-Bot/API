@@ -2,18 +2,21 @@ import {
     type ModuleRegistry,
     type NuitAPI,
     type NuitCommandInput,
-    type NuitCommand
+    type NuitCommand,
+    type BaseCtx,
 } from "./api";
 
 export function createAPI(
     registry: ModuleRegistry,
-    moduleName: string
+    moduleName: string,
 ): NuitAPI {
-    return {
+    const selfApi: NuitAPI = {
         registerCommand(cmd: NuitCommandInput) {
             const internal: NuitCommand = {
                 ...cmd,
-                module: moduleName
+                module: moduleName,
+                execute: (interaction, ctx: BaseCtx) =>
+                    cmd.execute(interaction, { ...ctx, api: selfApi }),
             };
 
             registry.commands.push(internal);
@@ -24,7 +27,7 @@ export function createAPI(
                 module: moduleName,
                 name,
                 once: false,
-                handler
+                handler,
             });
         },
 
@@ -33,8 +36,10 @@ export function createAPI(
                 module: moduleName,
                 name,
                 once: true,
-                handler
+                handler,
             });
-        }
+        },
     };
+
+    return selfApi;
 }
