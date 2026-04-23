@@ -12,6 +12,7 @@ export interface NuitCommand {
 export interface NuitEvent {
     name: string;
     once: boolean;
+    guildScoped: boolean;
     handler: (...args: any[]) => Promise<void> | void;
     module: string;
 }
@@ -31,8 +32,12 @@ export interface ModuleRegistry {
     events: NuitEvent[];
 }
 
+export interface NuitEventOptions {
+    guildScoped?: boolean;
+}
+
 export interface NuitAPI {
     registerCommand(cmd: NuitCommandInput): void;
-    onEvent(name: string, handler: NuitEvent["handler"]): void;
-    onceEvent(name: string, handler: NuitEvent["handler"]): void;
+    onEvent(name: string, handler: NuitEvent["handler"], options?: NuitEventOptions): void;
+    onceEvent(name: string, handler: NuitEvent["handler"], options?: NuitEventOptions): void;
 }
