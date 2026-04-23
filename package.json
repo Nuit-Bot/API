@@ -1,6 +1,6 @@
 {
     "name": "@nuit-bot/api",
-    "version": "0.0.1-0.2",
+    "version": "0.0.10",
     "type": "module",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
