@@ -3,8 +3,11 @@ export interface NuitCommandInput {
     execute: (interaction: any, ctx: ModuleContext) => Promise<void>;
 }
 
+export type NuitModuleKind = 'internal' | 'essential' | 'optional';
+
 export interface NuitCommand {
     module: string;
+    kind: NuitModuleKind | null;
     data: any;
     execute: (interaction: any, ctx: BaseCtx) => Promise<void>;
 }
