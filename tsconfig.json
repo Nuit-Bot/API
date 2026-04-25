@@ -37,6 +37,8 @@
     "include": [
         "api.ts",
         "createAPI.ts",
+        "config.ts",
+        "database.types.ts",
         "index.ts"
     ]
 }

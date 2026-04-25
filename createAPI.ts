@@ -1,11 +1,13 @@
-import {
-    type ModuleRegistry,
-    type NuitAPI,
-    type NuitCommandInput,
-    type NuitCommand,
-    type NuitEventOptions,
-    type NuitModuleKind,
-    type BaseCtx,
+import type { ClientEvents } from "discord.js";
+import type {
+    ModuleRegistry,
+    NuitAPI,
+    NuitCommandInput,
+    NuitCommand,
+    NuitEventHandler,
+    NuitEventOptions,
+    NuitModuleKind,
+    BaseCtx,
 } from "./api";
 
 export function createAPI(
@@ -26,24 +28,32 @@ export function createAPI(
             registry.commands.push(internal);
         },
 
-        onEvent(name, handler, options?: NuitEventOptions) {
+        onEvent<K extends keyof ClientEvents>(
+            name: K,
+            handler: NuitEventHandler<K>,
+            options?: NuitEventOptions,
+        ) {
             registry.events.push({
                 module: moduleName,
                 name,
                 once: false,
                 guildScoped: options?.guildScoped ?? true,
                 handler,
-            });
+            } as ModuleRegistry["events"][number]);
         },
 
-        onceEvent(name, handler, options?: NuitEventOptions) {
+        onceEvent<K extends keyof ClientEvents>(
+            name: K,
+            handler: NuitEventHandler<K>,
+            options?: NuitEventOptions,
+        ) {
             registry.events.push({
                 module: moduleName,
                 name,
                 once: true,
                 guildScoped: options?.guildScoped ?? true,
                 handler,
-            });
+            } as ModuleRegistry["events"][number]);
         },
     };
 

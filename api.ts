@@ -1,33 +1,75 @@
-export interface NuitCommandInput {
-    data: any;
-    execute: (interaction: any, ctx: ModuleContext) => Promise<void>;
-}
+import type {
+    Client,
+    ChatInputCommandInteraction,
+    AutocompleteInteraction,
+    ClientEvents,
+} from "discord.js";
+import type { SharedSlashCommand } from "@discordjs/builders";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "./database.types";
+import type { NuitConfig } from "./config";
 
-export type NuitModuleKind = 'internal' | 'essential' | 'optional';
+export type { NuitConfig } from "./config";
+export type { Database, TableRow, TableInsert, TableUpdate } from "./database.types";
 
-export interface NuitCommand {
-    module: string;
-    kind: NuitModuleKind | null;
-    data: any;
-    execute: (interaction: any, ctx: BaseCtx) => Promise<void>;
-}
+// ---------------------------------------------------------------------------
+// Interaction types
+// ---------------------------------------------------------------------------
 
-export interface NuitEvent {
-    name: string;
-    once: boolean;
-    guildScoped: boolean;
-    handler: (...args: any[]) => Promise<void> | void;
-    module: string;
-}
+/**
+ * Union of all interaction types a command handler may receive.
+ * Extend as needed when adding context menus, modals, etc.
+ */
+export type NuitInteraction =
+    | ChatInputCommandInteraction
+    | AutocompleteInteraction;
+
+// ---------------------------------------------------------------------------
+// Context types
+// ---------------------------------------------------------------------------
 
 export interface BaseCtx {
-    client: any;
-    supabase: any;
-    config: Readonly<any>;
+    client: Client;
+    supabase: SupabaseClient<Database>;
+    config: Readonly<NuitConfig>;
 }
 
 export interface ModuleContext extends BaseCtx {
     api: NuitAPI;
+}
+
+// ---------------------------------------------------------------------------
+// Module / command / event types
+// ---------------------------------------------------------------------------
+
+export type NuitModuleKind = "internal" | "essential" | "optional";
+
+export interface NuitCommandInput {
+    /** Slash command builder — any variant (with options, subcommands, etc.) */
+    data: SharedSlashCommand;
+    execute: (interaction: NuitInteraction, ctx: ModuleContext) => Promise<void>;
+}
+
+export interface NuitCommand {
+    module: string;
+    kind: NuitModuleKind | null;
+    data: SharedSlashCommand;
+    execute: (interaction: NuitInteraction, ctx: BaseCtx) => Promise<void>;
+}
+
+export interface NuitEventOptions {
+    guildScoped?: boolean;
+}
+
+export type NuitEventHandler<K extends keyof ClientEvents = keyof ClientEvents> =
+    (...args: ClientEvents[K]) => Promise<void> | void;
+
+export interface NuitEvent<K extends keyof ClientEvents = keyof ClientEvents> {
+    name: K;
+    once: boolean;
+    guildScoped: boolean;
+    handler: NuitEventHandler<K>;
+    module: string;
 }
 
 export interface ModuleRegistry {
@@ -35,12 +77,20 @@ export interface ModuleRegistry {
     events: NuitEvent[];
 }
 
-export interface NuitEventOptions {
-    guildScoped?: boolean;
-}
+// ---------------------------------------------------------------------------
+// API surface
+// ---------------------------------------------------------------------------
 
 export interface NuitAPI {
     registerCommand(cmd: NuitCommandInput): void;
-    onEvent(name: string, handler: NuitEvent["handler"], options?: NuitEventOptions): void;
-    onceEvent(name: string, handler: NuitEvent["handler"], options?: NuitEventOptions): void;
+    onEvent<K extends keyof ClientEvents>(
+        name: K,
+        handler: NuitEventHandler<K>,
+        options?: NuitEventOptions,
+    ): void;
+    onceEvent<K extends keyof ClientEvents>(
+        name: K,
+        handler: NuitEventHandler<K>,
+        options?: NuitEventOptions,
+    ): void;
 }
