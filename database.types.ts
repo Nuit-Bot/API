@@ -14,7 +14,25 @@ export type Json =
 
 export interface Database {
     public: {
-        Tables: Record<string, never>;
+        Tables: {
+            guild_modules: {
+                Row: {
+                    guild_id: string;
+                    module_id: string;
+                    enabled: boolean;
+                };
+                Insert: {
+                    guild_id: string;
+                    module_id: string;
+                    enabled?: boolean;
+                };
+                Update: {
+                    guild_id?: string;
+                    module_id?: string;
+                    enabled?: boolean;
+                };
+            };
+        };
         Views: Record<string, never>;
         Functions: Record<string, never>;
         Enums: Record<string, never>;

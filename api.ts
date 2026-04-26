@@ -9,6 +9,16 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "./database.types";
 import type { NuitConfig } from "./config";
 
+/**
+ * Minimal structural interface for the Supabase client.
+ * Defined locally so the api package does not import from @supabase/supabase-js,
+ * avoiding dual-install type-identity mismatches with the consuming package.
+ */
+export interface NuitDb {
+    from(relation: string): any;
+    rpc(fn: string, args?: Record<string, unknown>): any;
+}
+
 export type { NuitConfig } from "./config";
 export type { Database, TableRow, TableInsert, TableUpdate } from "./database.types";
 
