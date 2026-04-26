@@ -51,7 +51,7 @@ export function createAPI(
                 module: moduleName,
                 name,
                 once: true,
-                guildScoped: options?.guildScoped ?? true,
+                guildScoped: options?.guildScoped ?? false,
                 handler,
             } as ModuleRegistry["events"][number]);
         },
