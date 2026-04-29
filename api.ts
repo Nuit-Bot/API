@@ -20,7 +20,12 @@ export interface NuitDb {
 }
 
 export type { NuitConfig } from "./config";
-export type { Database, TableRow, TableInsert, TableUpdate } from "./database.types";
+export type {
+    Database,
+    TableRow,
+    TableInsert,
+    TableUpdate,
+} from "./database.types";
 
 // ---------------------------------------------------------------------------
 // Interaction types
@@ -57,22 +62,23 @@ export type NuitModuleKind = "internal" | "essential" | "optional";
 export interface NuitCommandInput {
     /** Slash command builder — any variant (with options, subcommands, etc.) */
     data: SharedSlashCommand;
-    execute: (interaction: NuitInteraction, ctx: ModuleContext) => Promise<void>;
+    execute: (interaction: NuitInteraction, ctx: ModuleContext) => any;
 }
 
 export interface NuitCommand {
     module: string;
     kind: NuitModuleKind | null;
     data: SharedSlashCommand;
-    execute: (interaction: NuitInteraction, ctx: BaseCtx) => Promise<void>;
+    execute: (interaction: NuitInteraction, ctx: BaseCtx) => any;
 }
 
 export interface NuitEventOptions {
     guildScoped?: boolean;
 }
 
-export type NuitEventHandler<K extends keyof ClientEvents = keyof ClientEvents> =
-    (...args: ClientEvents[K]) => Promise<void> | void;
+export type NuitEventHandler<
+    K extends keyof ClientEvents = keyof ClientEvents,
+> = (...args: ClientEvents[K]) => Promise<void> | void;
 
 export interface NuitEvent<K extends keyof ClientEvents = keyof ClientEvents> {
     name: K;
