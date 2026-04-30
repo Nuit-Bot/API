@@ -22,7 +22,7 @@ export function createAPI(
                 module: moduleName,
                 kind,
                 execute: (interaction, ctx: BaseCtx) =>
-                    cmd.execute(interaction, { ...ctx, api: selfApi }),
+                    cmd.execute(interaction, ctx),
             };
 
             registry.commands.push(internal);
