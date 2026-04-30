@@ -62,7 +62,7 @@ export type NuitModuleKind = "internal" | "essential" | "optional";
 export interface NuitCommandInput {
     /** Slash command builder — any variant (with options, subcommands, etc.) */
     data: SharedSlashCommand;
-    execute: (interaction: NuitInteraction, ctx: ModuleContext) => any;
+    execute: (interaction: NuitInteraction, ctx: BaseCtx) => any;
 }
 
 export interface NuitCommand {
