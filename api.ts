@@ -1,10 +1,4 @@
-import type {
-    Client,
-    ChatInputCommandInteraction,
-    AutocompleteInteraction,
-    ClientEvents,
-    Interaction,
-} from "discord.js";
+import type { Client, ClientEvents, Interaction } from "discord.js";
 import type { SharedSlashCommand } from "@discordjs/builders";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "./database.types";
