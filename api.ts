@@ -3,6 +3,7 @@ import type {
     ChatInputCommandInteraction,
     AutocompleteInteraction,
     ClientEvents,
+    Interaction,
 } from "discord.js";
 import type { SharedSlashCommand } from "@discordjs/builders";
 import type { SupabaseClient } from "@supabase/supabase-js";
@@ -28,18 +29,6 @@ export type {
 } from "./database.types";
 
 // ---------------------------------------------------------------------------
-// Interaction types
-// ---------------------------------------------------------------------------
-
-/**
- * Union of all interaction types a command handler may receive.
- * Extend as needed when adding context menus, modals, etc.
- */
-export type NuitInteraction =
-    | ChatInputCommandInteraction
-    | AutocompleteInteraction;
-
-// ---------------------------------------------------------------------------
 // Context types
 // ---------------------------------------------------------------------------
 
@@ -62,14 +51,14 @@ export type NuitModuleKind = "internal" | "essential" | "optional";
 export interface NuitCommandInput {
     /** Slash command builder — any variant (with options, subcommands, etc.) */
     data: SharedSlashCommand;
-    execute: (interaction: NuitInteraction, ctx: BaseCtx) => any;
+    execute: (interaction: Interaction, ctx: BaseCtx) => any;
 }
 
 export interface NuitCommand {
     module: string;
     kind: NuitModuleKind | null;
     data: SharedSlashCommand;
-    execute: (interaction: NuitInteraction, ctx: BaseCtx) => any;
+    execute: (interaction: Interaction, ctx: BaseCtx) => any;
 }
 
 export interface NuitEventOptions {
