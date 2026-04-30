@@ -22,9 +22,9 @@ export interface NuitDb {
 export type { NuitConfig } from "./config";
 export type {
     Database,
-    TableRow,
-    TableInsert,
-    TableUpdate,
+    Tables as TableRow,
+    TablesInsert as TableInsert,
+    TablesUpdate as TableUpdate,
 } from "./database.types";
 
 // ---------------------------------------------------------------------------
