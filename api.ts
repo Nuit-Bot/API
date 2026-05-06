@@ -74,6 +74,7 @@ export interface NuitEvent<K extends keyof ClientEvents = keyof ClientEvents> {
 export interface ModuleRegistry {
     commands: NuitCommand[];
     events: NuitEvent[];
+    config: ConfigField[];
 }
 
 // ---------------------------------------------------------------------------
@@ -92,4 +93,90 @@ export interface NuitAPI {
         handler: NuitEventHandler<K>,
         options?: NuitEventOptions,
     ): void;
+    registerConfig(config: ModuleConfigField[]): void;
 }
+
+// ---------------------------------------------------------------------------
+// Config surface
+// ---------------------------------------------------------------------------
+
+export type ConfigFieldType =
+    | "string"
+    | "number"
+    | "boolean"
+    | "select"
+    | "channel"
+    | "role"
+    | "user"
+    | "secret";
+
+interface BaseField {
+    key: string;
+    label: string;
+    description?: string;
+    group?: string;
+    optional?: boolean;
+    module: string;
+}
+
+interface StringField extends BaseField {
+    type: "string";
+    default?: string;
+    min?: number; // length
+    max?: number;
+}
+
+interface NumberField extends BaseField {
+    type: "number";
+    default?: number;
+    min?: number;
+    max?: number;
+}
+
+interface BooleanField extends BaseField {
+    type: "boolean";
+    default?: boolean;
+}
+
+interface SelectField extends BaseField {
+    type: "select";
+    options: { label: string; value: string }[];
+    default?: string;
+}
+
+interface ChannelField extends BaseField {
+    type: "channel";
+    default?: string; // snowflake
+}
+
+interface RoleField extends BaseField {
+    type: "role";
+    default?: string;
+}
+
+interface UserField extends BaseField {
+    type: "user";
+    default?: string;
+}
+
+interface SecretField extends BaseField {
+    type: "secret";
+}
+
+export type ConfigField =
+    | StringField
+    | NumberField
+    | BooleanField
+    | SelectField
+    | ChannelField
+    | RoleField
+    | UserField
+    | SecretField;
+
+export type ModuleConfigField = ConfigField extends infer T
+    ? T extends ConfigField
+        ? Omit<T, "module">
+        : never
+    : never;
+
+export type ConfigSchema = Record<string, ConfigField>;

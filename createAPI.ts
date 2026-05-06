@@ -8,7 +8,15 @@ import type {
     NuitEventOptions,
     NuitModuleKind,
     BaseCtx,
+    ModuleConfigField,
 } from "./api";
+
+function attachModule<T extends ModuleConfigField>(field: T, moduleName: string): T & { module: string } {
+    return {
+        ...field,
+        module: moduleName,
+    };
+}
 
 export function createAPI(
     registry: ModuleRegistry,
@@ -54,6 +62,12 @@ export function createAPI(
                 guildScoped: options?.guildScoped ?? false,
                 handler,
             } as ModuleRegistry["events"][number]);
+        },
+
+        registerConfig(config: ModuleConfigField[]) {
+            for (const field of config) {
+                registry.config.push(attachModule(field, moduleName));
+            }
         },
     };
 
