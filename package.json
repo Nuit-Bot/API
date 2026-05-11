@@ -1,6 +1,6 @@
 {
     "name": "@nuit-bot/api",
-    "version": "0.0.19",
+    "version": "0.0.20",
     "type": "module",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
@@ -21,11 +21,11 @@
         "typescript": "^5"
     },
     "peerDependencies": {
-        "@supabase/supabase-js": "^2",
+        "@discordjs/builders": "^1",
         "discord.js": "^14"
     },
     "peerDependenciesMeta": {
-        "@supabase/supabase-js": {
+        "@discordjs/builders": {
             "optional": true
         },
         "discord.js": {

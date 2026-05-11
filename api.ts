@@ -1,17 +1,20 @@
 import type { Client, ClientEvents, Interaction } from "discord.js";
 import type { SharedSlashCommand } from "@discordjs/builders";
-import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "./database.types";
 import type { NuitConfig } from "./config";
 
 /**
- * Minimal structural interface for the Supabase client.
- * Defined locally so the api package does not import from @supabase/supabase-js,
- * avoiding dual-install type-identity mismatches with the consuming package.
+ * Minimal structural interface for the Drizzle database instance.
+ * Kept intentionally small so modules can depend on the shared context shape
+ * without importing Drizzle implementation details from the bot package.
  */
 export interface NuitDb {
-    from(relation: string): any;
-    rpc(fn: string, args?: Record<string, unknown>): any;
+    select(...args: unknown[]): any;
+    insert(...args: unknown[]): any;
+    update(...args: unknown[]): any;
+    delete(...args: unknown[]): any;
+    execute(...args: unknown[]): any;
+    transaction(...args: unknown[]): any;
 }
 
 export type { NuitConfig } from "./config";
@@ -28,7 +31,7 @@ export type {
 
 export interface BaseCtx {
     client: Client;
-    supabase: SupabaseClient<Database>;
+    db: NuitDb;
     config: Readonly<NuitConfig>;
 }
 
