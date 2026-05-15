@@ -2,6 +2,7 @@ import type { Client, ClientEvents, Interaction } from "discord.js";
 import type { SharedSlashCommand } from "@discordjs/builders";
 import type { Database } from "./database.types";
 import type { NuitConfig } from "./config";
+import type { MessageBus } from "./message";
 
 /**
  * Minimal structural interface for the Drizzle database instance.
@@ -33,6 +34,7 @@ export interface BaseCtx {
     client: Client;
     db: NuitDb;
     config: Readonly<NuitConfig>;
+    bus: MessageBus;
 }
 
 export interface ModuleContext extends BaseCtx {
